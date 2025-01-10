@@ -34,7 +34,7 @@ class Paramify:
         # Dynamically create a Pydantic model
         self.ParameterModel = self._create_model(self._config_params)
         try:
-            self.parameters = self.ParameterModel(**{p['name']: p['default'] for p in self._config_params})
+            self.parameters = self.ParameterModel(**{p['name']: p.get('default', None) for p in self._config_params})
         except ValidationError as e:
             print("Validation Error in Configuration:", e)
             raise
@@ -50,11 +50,22 @@ class Paramify:
     def _create_model(self, config_data: list) -> Type[BaseModel]:
         """
         Dynamically create a Pydantic BaseModel based on the configuration data.
+        Fields without a default value or explicitly set to `None` are marked as optional.
         """
-        fields = {
-            param['name']: (eval(param['type']), param.get('default', None))
-            for param in config_data
-        }
+        from typing import Optional
+
+        fields = {}
+        for param in config_data:
+            field_type = eval(param['type'])  # Determine the type
+            default = param.get('default', None)  # Get the default value, or None if not provided
+
+            if default is None:
+                # If no default value is provided, make the field optional
+                fields[param['name']] = (Optional[field_type], default)
+            else:
+                # Otherwise, set the field type and default value
+                fields[param['name']] = (field_type, default)
+
         return create_model('ParameterModel', **fields)
 
     def _add_parameter(self, name: str):
