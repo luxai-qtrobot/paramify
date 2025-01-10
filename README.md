@@ -1,17 +1,18 @@
 
 # Paramify
 
-**Paramify** is a lightweight Python library designed to simplify dynamic parameter management. It allows developers to define, validate, and manage parameters dynamically using a JSON or YAML schema, with optional support for web-based parameter configuration.
-
+**Paramify** is a lightweight Python library designed to simplify dynamic parameter management. It allows developers to define, validate, and manage parameters dynamically using a JSON or YAML schema, with optional support for **command-line integration** and a **web-based parameter configuration**.
 ---
 
 ## Key Features
 
 - **Dynamic Parameter Management**: Easily define and manage parameters using a simple JSON schema.
+- **Command-Line Integration**: Automatically generate CLI arguments using `argparser` based on your configuration, allowing runtime overrides without separate definitions.
+- **Web Interface**: Expose parameters through a user-friendly Flask-based UI for runtime configuration.
 - **Validation**: Automatically validate parameters with the help of Pydantic.
 - **Custom Callbacks**: Define optional callbacks to handle updates to specific parameters.
-- **Web Interface**: Expose parameters through a user-friendly Flask-based UI for runtime configuration.
 - **JSON/YAML Integration**: Load and manage parameters directly from JSON or YAML files for flexible configurations.
+- **Scope-Based Control:** Specify a parameter's scope as `"runtime"`, `"cli"` and `"all"`
 - **Extensible**: Developers can extend the base class to add custom behaviors.
 
 
@@ -128,7 +129,7 @@ Here is an example of a JSON configuration file:
 ```json
 {
     "name": "My Example App",
-    "description": "This is an example app to demonstrate the usage of ParamifyWeb",
+    "description": "This is an example app to demonstrate the usage of Paramify",
     "parameters": [
         {
             "name": "param1",
@@ -162,7 +163,7 @@ Here is an example of a JSON configuration file:
 Here is an example of a JSON configuration file:
 ```yaml
 name: "My Example App"
-description: "This is an example app to demonstrate the usage of ParamifyWeb"
+description: "This is an example app to demonstrate the usage of Paramify"
 parameters:
   - name: "param1"
     type: "bool"
@@ -193,6 +194,25 @@ parameters:
         - "option 3"
 
 ```
+---
+
+## Command-Line Integration
+Paramify automatically generates CLI arguments based on your parameter schema, eliminating the need for separate argument definitions. Parameters defined with scope: `"cli"` or scope: `"all"` (it is the default) are included in the command-line interface, allowing users to override default values directly from the terminal.
+
+Here is an example of the generated CLI for a simple application using Paramify:
+
+```bash
+usage: simple_params_web.py [-h] [--param1] [--param2 PARAM2] [--param3 PARAM3]
+
+This is an example app to demonstrate the usage of Paramify
+
+options:
+  -h, --help            show this help message and exit
+  --param1              A boolean parameter to enable or disable a feature.
+  --param2 PARAM2       An integer parameter for numeric configuration.
+  --param3 PARAM3       A parameter to select from predefined options.
+```
+
 ---
 
 ## Features Overview

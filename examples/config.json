@@ -7,7 +7,8 @@
             "type": "bool",
             "label": "Enable Feature",
             "description": "A boolean parameter to enable or disable a feature.",
-            "default": true
+            "default": true,
+            "scope": "runtime"
         },
         {
             "name": "param2",

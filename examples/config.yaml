@@ -6,6 +6,7 @@ parameters:
     label: "Enable Feature"
     description: "A boolean parameter to enable or disable a feature."
     default: true
+    scope: "all" # cli, runtime, all    
 
   - name: "param2"
     type: "int"
@@ -58,3 +59,4 @@ parameters:
     default: ""
     ui:
       element: "textarea"
+    

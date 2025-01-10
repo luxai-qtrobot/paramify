@@ -13,10 +13,10 @@ class MyApp(Paramify):
 if __name__ == '__main__':
     params = {
         "parameters": [
-            {"name": "param1", "type": "bool", "label": "Parameter 1", "default": True},
-            {"name": "param2", "type": "int", "label": "Parameter 2", "default": 4},
+            {"name": "param1", "type": "bool", "label": "Parameter 1", "default": False, "description": "This is a boolean parameter"},
+            {"name": "param2", "type": "int", "label": "Parameter 2", "default": 4, "description": "This is an integer parameter"},
         ]
-    }  
+    }
 
     app = MyApp(params)
 

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="paramify",
-    version="0.1.1",
+    version="0.2.0",
     description="A lightweight Python library for dynamic parameter management and runtime configuration.",
     author="Ali PAikan",
     author_email="ali.paikan@luxai.com",

@@ -7,11 +7,15 @@ from flask import Flask, jsonify, request, send_from_directory
 from paramify.paramify import Paramify
 
 class ParamifyWeb(Paramify):
-    def __init__(self, config: Union[Dict[str, Any], str], host: str = '0.0.0.0', port: int = 5000):
+    def __init__(self, 
+                 config: Union[Dict[str, Any], str], 
+                 enable_cli: bool = True,
+                 host: str = '0.0.0.0', 
+                 port: int = 5000):
         """
         Initialize the ParamifyWeb class, set up the Flask app, and start the server in a separate thread.
         """
-        super().__init__(config)  # Initialize the parent class
+        super().__init__(config, enable_cli)  # Initialize the parent class
         self.host = host
         self.port = port
 
@@ -51,27 +55,24 @@ class ParamifyWeb(Paramify):
         def get_config():
             """
             Return the configuration details (metadata and current parameter values).
+            Exclude parameters with scope "cli".
             """
             # Start with the original configuration metadata
             config_with_values = self._config.copy()
             
-            # Update the "default" values in the parameters to reflect current values
-            for param in config_with_values['parameters']:
-                param_name = param['name']
-                if param_name in self.get_parameters():
-                    param['default'] = self.get_parameters()[param_name]
+            # Filter out parameters with scope "cli"
+            config_with_values['parameters'] = [
+                {
+                    **param,
+                    "default": self.get_parameters().get(param["name"], param.get("default"))
+                }
+                for param in config_with_values['parameters']
+                if param.get("scope", "all") != "cli"
+            ]
             
             return jsonify(config_with_values)
-        # # API route: Get current parameter values
-        # @self.app.route('/api/parameters', methods=['GET'])
-        # def get_parameters():
-        #     """
-        #     Return the current parameter values.
-        #     """
-        #     return jsonify(self.get_parameters())
 
         # API route: Update a parameter value
-        # @self.app.route('/api/parameters', methods=['POST'])
         @self.app.route('/api/update', methods=['POST'])
         def update_parameter():
             """
