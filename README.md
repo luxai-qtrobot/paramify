@@ -2,6 +2,7 @@
 # Paramify
 
 **Paramify** is a lightweight Python library designed to simplify dynamic parameter management. It allows developers to define, validate, and manage parameters dynamically using a JSON or YAML schema, with optional support for **command-line integration** and a **web-based parameter configuration**.
+
 ---
 
 ## Key Features
@@ -122,6 +123,44 @@ This example demonstrates how to load parameters from a YAML file and expose the
 
 ---
 
+## YAML Configuration Example
+
+Here is an example of a JSON configuration file:
+```yaml
+name: "My Example App"
+description: "This is an example app to demonstrate the usage of Paramify"
+parameters:
+  - name: "param1"
+    type: "bool"
+    label: "Enable Feature"
+    description: "A boolean parameter to enable or disable a feature."
+    default: true
+    scope: "all" # cli, runtime, all    
+
+  - name: "param2"
+    type: "int"
+    label: "Integer Value"
+    description: "An integer parameter for numeric configuration."
+    default: 4
+    ui:
+      element: "slider"
+      min: 1
+      max: 10
+
+  - name: "param3"
+    type: "str"
+    label: "Select Option"
+    description: "A parameter to select from predefined options."
+    default: "option 2"
+    ui:
+      element: "select"
+      items:
+        - "option 1"
+        - "option 2"
+        - "option 3"
+
+```
+
 ## JSON Configuration Example
 
 Here is an example of a JSON configuration file:
@@ -158,42 +197,6 @@ Here is an example of a JSON configuration file:
 }
 ```
 
-## YAML Configuration Example
-
-Here is an example of a JSON configuration file:
-```yaml
-name: "My Example App"
-description: "This is an example app to demonstrate the usage of Paramify"
-parameters:
-  - name: "param1"
-    type: "bool"
-    label: "Enable Feature"
-    description: "A boolean parameter to enable or disable a feature."
-    default: true
-
-  - name: "param2"
-    type: "int"
-    label: "Integer Value"
-    description: "An integer parameter for numeric configuration."
-    default: 4
-    ui:
-      element: "slider"
-      min: 1
-      max: 10
-
-  - name: "param3"
-    type: "str"
-    label: "Select Option"
-    description: "A parameter to select from predefined options."
-    default: "option 2"
-    ui:
-      element: "select"
-      items:
-        - "option 1"
-        - "option 2"
-        - "option 3"
-
-```
 ---
 
 ## Command-Line Integration
