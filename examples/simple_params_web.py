@@ -29,12 +29,10 @@ class MyApp(ParamifyWeb):
 
 if __name__ == '__main__':
     # load parameters from a JSON file
-    try:
-        with open('config.json', "r") as f:
-            params = json.load(f)
-            Logger.info("Parameters loaded from config.json")
-    except Exception as e:
-        Logger.error(f"Failed to load parameters from JSON file: {e}")
+    # params = {}
+    with open('config.json', "r") as f:
+        params = json.load(f)
+        Logger.info("Parameters loaded from config.json")
 
     # Initialize the app with parameters
     app = MyApp(params)

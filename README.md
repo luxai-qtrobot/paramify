@@ -14,6 +14,11 @@
 - **JSON Integration**: Load and manage parameters directly from JSON files for flexible configurations.
 - **Extensible**: Developers can extend the base class to add custom behaviors.
 
+
+Here is an example of the Paramify web interface:
+
+![Paramify Web UI](assets/ui-screenshot.png)
+
 ---
 
 ## Installation
@@ -105,13 +110,11 @@ class MyApp(ParamifyWeb):
 
 
 if __name__ == '__main__':
-    # Load parameters from a JSON file
-    try:
-        with open('config.json', "r") as f:
-            params = json.load(f)
-            Logger.info("Parameters loaded from config.json")
-    except Exception as e:
-        Logger.error(f"Failed to load parameters from JSON file: {e}")
+    # load parameters from a JSON file
+    # params = {}
+    with open('config.json', "r") as f:
+        params = json.load(f)
+        Logger.info("Parameters loaded from config.json")
 
     # Initialize the app with parameters
     app = MyApp(params)
