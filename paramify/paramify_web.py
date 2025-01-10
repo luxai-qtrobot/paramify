@@ -1,13 +1,13 @@
 import os
-from typing import Any
 import threading
+from typing import Any, Dict, Union
 from flask import Flask, jsonify, request, send_from_directory
 # from flask_cors import CORS
 
 from paramify.paramify import Paramify
 
 class ParamifyWeb(Paramify):
-    def __init__(self, config: dict, host: str = '0.0.0.0', port: int = 5000):
+    def __init__(self, config: Union[Dict[str, Any], str], host: str = '0.0.0.0', port: int = 5000):
         """
         Initialize the ParamifyWeb class, set up the Flask app, and start the server in a separate thread.
         """

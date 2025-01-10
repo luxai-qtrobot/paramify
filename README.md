@@ -1,7 +1,7 @@
 
 # Paramify
 
-**Paramify** is a lightweight Python library designed to simplify dynamic parameter management. It allows developers to define, validate, and manage parameters dynamically using a JSON schema, with optional support for web-based parameter configuration via Flask.
+**Paramify** is a lightweight Python library designed to simplify dynamic parameter management. It allows developers to define, validate, and manage parameters dynamically using a JSON or YAML schema, with optional support for web-based parameter configuration.
 
 ---
 
@@ -11,7 +11,7 @@
 - **Validation**: Automatically validate parameters with the help of Pydantic.
 - **Custom Callbacks**: Define optional callbacks to handle updates to specific parameters.
 - **Web Interface**: Expose parameters through a user-friendly Flask-based UI for runtime configuration.
-- **JSON Integration**: Load and manage parameters directly from JSON files for flexible configurations.
+- **JSON/YAML Integration**: Load and manage parameters directly from JSON or YAML files for flexible configurations.
 - **Extensible**: Developers can extend the base class to add custom behaviors.
 
 
@@ -109,21 +109,15 @@ class MyApp(ParamifyWeb):
         Logger.info(f"Text area value was updated to {value}")
 
 
-if __name__ == '__main__':
-    # load parameters from a JSON file
-    # params = {}
-    with open('config.json', "r") as f:
-        params = json.load(f)
-        Logger.info("Parameters loaded from config.json")
-
-    # Initialize the app with parameters
-    app = MyApp(params)
+if __name__ == '__main__':    
+    # Initialize the app with parameters from a YAML file
+    app = MyApp('config.yaml')
 
     # Prevent the script from exiting immediately
     input("Press Enter to continue...")
 ```
 
-This example demonstrates how to load parameters from a JSON file and expose them via a Flask web interface. Callback functions are triggered when parameters are updated.
+This example demonstrates how to load parameters from a YAML file and expose them via a web interface. Callback functions are triggered when parameters are updated.
 
 ---
 
@@ -153,13 +147,6 @@ Here is an example of a JSON configuration file:
         },
         {
             "name": "param3",
-            "type": "float",
-            "label": "Floating Point Value",
-            "description": "A float parameter for precision configuration.",
-            "default": 7.5
-        },
-        {
-            "name": "param4",
             "type": "str",
             "label": "Select Option",
             "description": "A parameter to select from predefined options.",
@@ -170,6 +157,42 @@ Here is an example of a JSON configuration file:
 }
 ```
 
+## YAML Configuration Example
+
+Here is an example of a JSON configuration file:
+```yaml
+name: "My Example App"
+description: "This is an example app to demonstrate the usage of ParamifyWeb"
+parameters:
+  - name: "param1"
+    type: "bool"
+    label: "Enable Feature"
+    description: "A boolean parameter to enable or disable a feature."
+    default: true
+
+  - name: "param2"
+    type: "int"
+    label: "Integer Value"
+    description: "An integer parameter for numeric configuration."
+    default: 4
+    ui:
+      element: "slider"
+      min: 1
+      max: 10
+
+  - name: "param3"
+    type: "str"
+    label: "Select Option"
+    description: "A parameter to select from predefined options."
+    default: "option 2"
+    ui:
+      element: "select"
+      items:
+        - "option 1"
+        - "option 2"
+        - "option 3"
+
+```
 ---
 
 ## Features Overview
@@ -177,7 +200,7 @@ Here is an example of a JSON configuration file:
 - **Ease of Use**: Simple, human-readable JSON schema for parameter definitions.
 - **Web UI**: Manage and modify parameters in real-time through a web interface.
 - **Custom Logic**: Implement application-specific callbacks for parameters.
-- **JSON Support**: Load configurations from external JSON files for flexibility.
+- **JSON/YAML Support**: Load configurations from external JSON or YAML files for flexibility.
 
 ---
 
@@ -190,4 +213,3 @@ Contributions are welcome! Feel free to open issues or submit pull requests to i
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for details.
-

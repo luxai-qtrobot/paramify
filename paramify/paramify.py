@@ -1,13 +1,32 @@
+import json
+import yaml
 from pydantic import BaseModel, create_model, ValidationError
-from typing import Any, Dict, Type
+from typing import Any, Dict, Type, Union
 
 class Paramify:
-    def __init__(self, config: dict):
+    def __init__(self, config: Union[Dict[str, Any], str]):
         """
         Initialize the class by dynamically generating a Pydantic model
         and creating setters for each parameter.
         """
-        self._config = config
+
+        """
+        Initialize Paramify with a dictionary, a JSON file, or a YAML file.
+        """
+        if isinstance(config, str):  # If a string, assume it's a file path
+            if config.endswith('.json'):  # JSON file
+                with open(config, 'r') as f:
+                    config = json.load(f)
+            elif config.endswith(('.yaml', '.yml')):  # YAML file
+                with open(config, 'r') as f:
+                    config = yaml.safe_load(f)
+            else:
+                raise ValueError("Unsupported file format. Use a JSON or YAML file.")
+        elif not isinstance(config, dict):  # Validate input
+            raise ValueError("Config must be a dictionary or a valid JSON/YAML file path.")
+
+        self._config = config        
+        
 
         if not isinstance(config, dict) or 'parameters' not in config:
             raise ValueError("Invalid configuration format. Expected a 'parameters' key.")

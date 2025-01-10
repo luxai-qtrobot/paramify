@@ -1,0 +1,60 @@
+name: "My Example App"
+description: "This is an example app to demonstrate the usage of ParamifyWeb"
+parameters:
+  - name: "param1"
+    type: "bool"
+    label: "Enable Feature"
+    description: "A boolean parameter to enable or disable a feature."
+    default: true
+
+  - name: "param2"
+    type: "int"
+    label: "Integer Value"
+    description: "An integer parameter for numeric configuration."
+    default: 4
+    ui:
+      element: "slider"
+      min: 1
+      max: 10
+
+  - name: "param3"
+    type: "float"
+    label: "Floating Point Value"
+    description: "A float parameter for precision configuration."
+    default: 7.5
+
+  - name: "param4"
+    type: "str"
+    label: "Select Option"
+    description: "A parameter to select from predefined options."
+    default: "option 2"
+    ui:
+      element: "select"
+      items:
+        - "option 1"
+        - "option 2"
+        - "option 3"
+
+  - name: "param5"
+    type: "list"
+    label: "List of Values"
+    description: "A parameter to manage a list of strings."
+    default:
+      - "value 1"
+      - "value 2"
+    ui:
+      create: true
+
+  - name: "param6"
+    type: "str"
+    label: "Simple String"
+    description: "A simple string parameter."
+    default: "Hello Paramify"
+
+  - name: "param7"
+    type: "str"
+    label: "Text Area"
+    description: "A long text input parameter."
+    default: ""
+    ui:
+      element: "textarea"

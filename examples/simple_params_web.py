@@ -28,14 +28,9 @@ class MyApp(ParamifyWeb):
 
 
 if __name__ == '__main__':
-    # load parameters from a JSON file
-    # params = {}
-    with open('config.json', "r") as f:
-        params = json.load(f)
-        Logger.info("Parameters loaded from config.json")
 
-    # Initialize the app with parameters
-    app = MyApp(params)
+    # Initialize the app with parameters from a JSON file
+    app = MyApp('config.yaml')
 
     # Prevent the script from exiting immediately
     input("Press Enter to continue...")

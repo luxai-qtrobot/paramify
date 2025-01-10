@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="paramify",
-    version="0.1.0",
+    version="0.1.1",
     description="A lightweight Python library for dynamic parameter management and runtime configuration.",
     author="Ali PAikan",
     author_email="ali.paikan@luxai.com",
@@ -11,7 +11,8 @@ setup(
     include_package_data=True,
     install_requires=[
         "Flask>=2.0.0",
-        "pydantic>=1.10.0"
+        "pydantic>=1.10.0",
+        "pyyaml>=5.4.1",
     ],
     classifiers=[
         "Development Status :: 4 - Beta",
