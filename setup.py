@@ -8,12 +8,12 @@ with open(os.path.join(current_dir, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="paramify",
-    version="0.1.1",
+    version="0.1.2",
     description="A lightweight Python library for dynamic parameter management and runtime configuration.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Ali PAikan",
-    author_email="ali.paikan@luxai.com",
+    author_email="ali.paikan@gmail.com",
     url="https://github.com/luxai-qtrobot/paramify",
     packages=find_packages(),
     include_package_data=True,
