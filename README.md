@@ -19,7 +19,7 @@
 
 Here is an example of the Paramify web interface:
 
-![Paramify Web UI](assets/ui-screenshot.png)
+![Paramify Web UI](https://github.com/luxai-qtrobot/paramify/raw/main/assets/ui-screenshot.png)
 
 ---
 
@@ -28,7 +28,7 @@ Here is an example of the Paramify web interface:
 To install Paramify, use the following command:
 
 ```bash
-pip install git+https://github.com/luxai-qtrobot/paramify.git
+pip install paramify
 ```
 
 ---

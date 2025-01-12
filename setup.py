@@ -1,9 +1,17 @@
+import os
 from setuptools import setup, find_packages
+
+
+current_dir = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(current_dir, "README.md"), encoding="utf-8") as f:
+    long_description = f.read()
 
 setup(
     name="paramify",
-    version="0.2.0",
+    version="0.1.0",
     description="A lightweight Python library for dynamic parameter management and runtime configuration.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author="Ali PAikan",
     author_email="ali.paikan@luxai.com",
     url="https://github.com/luxai-qtrobot/paramify",
