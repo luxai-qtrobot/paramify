@@ -141,3 +141,24 @@ class Paramify:
         Return the current parameters and their values.
         """
         return self.parameters.dict()
+
+    def __str__(self):
+        """
+        Return a formatted string representation of the parameters and their values.
+        Includes parameter labels if available.
+        """
+        params = self.get_parameters()
+
+        max_length = max(
+            len(f"{p['name']} ({p.get('label', '')})") for p in self._config_params
+        )  
+                
+        formatted_params = "\n".join(
+            f"{name} ({param.get('label', '')}){(max_length - len(name) - len(param.get('label', '')) - 2) * ' '}: {value}"
+            for name, value, param in (
+                (name, value, next((p for p in self._config_params if p['name'] == name), {}))
+                for name, value in params.items()
+            )
+        )
+        app_name = self._config.get('name', self.__class__.__name__)
+        return f"{app_name} initialized with:\n{formatted_params}"
