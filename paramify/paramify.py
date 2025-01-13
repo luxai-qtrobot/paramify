@@ -154,7 +154,7 @@ class Paramify:
         )  
                 
         formatted_params = "\n".join(
-            f"{name} ({param.get('label', '')}){(max_length - len(name) - len(param.get('label', '')) - 2) * ' '}: {value}"
+            f"   {name} ({param.get('label', '')}){(max_length - len(name) - len(param.get('label', '')) - 2) * ' '}: {value}"
             for name, value, param in (
                 (name, value, next((p for p in self._config_params if p['name'] == name), {}))
                 for name, value in params.items()
