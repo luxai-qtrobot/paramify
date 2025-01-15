@@ -1,5 +1,5 @@
 import json
-import yaml
+from ruamel.yaml import YAML
 import argparse
 from pydantic import BaseModel, create_model, ValidationError
 from typing import Any, Dict, Type, Union
@@ -8,9 +8,62 @@ from typing import Any, Dict, Type, Union
 class Paramify:
     def __init__(self, config: Union[Dict[str, Any], str], enable_cli: bool = True):
         """
-        Initialize Paramify with a dictionary, a JSON file, or a YAML file.
-        Optionally parse command-line arguments if enable_cli is True.
+        A class for dynamic parameter management, validation, and runtime configuration.
+
+        The Paramify class allows developers to define and manage parameters dynamically 
+        using a configuration provided as a dictionary, JSON file, or YAML file. It also 
+        provides optional command-line argument parsing and supports runtime updates with 
+        automatic persistence for file-based configurations.
+
+        Features:
+        - Dynamic parameter validation using Pydantic.
+        - Support for JSON and YAML configuration formats.
+        - Optional CLI integration for overriding parameters at runtime.
+        - Automatic persistence of parameter changes when initialized with a JSON or YAML file.
+        - Custom callback methods triggered on parameter updates.
+
+        Parameters:
+        ----------
+        config : Union[Dict[str, Any], str]
+            A dictionary or the path to a JSON/YAML file containing the parameter configuration.
+            The configuration should have a "parameters" key, which is a list of parameter definitions.
+
+            Example Configuration:
+            ```yaml
+            parameters:
+            - name: "param1"
+                type: "bool"
+                default: true
+                label: "Enable Feature"
+                description: "A boolean parameter to enable or disable a feature."
+            - name: "param2"
+                type: "int"
+                default: 42
+                label: "Max Value"
+                description: "An integer parameter for setting the maximum value."
+            ```
+
+        enable_cli : bool, optional
+            If True, enables command-line argument parsing to override parameters. Default is True.
+
+        Raises:
+        ------
+        ValueError:
+            If the configuration format is invalid or unsupported.
+        ValidationError:
+            If parameter validation fails during initialization.
+
+        Notes:
+        -----
+        - When initialized with a dictionary, changes to parameters are not persisted.
+        - For JSON or YAML configurations, changes are automatically saved to the file.
+        - CLI changes are transient and do not persist to the file.
         """
+        # Track the file path for persistence
+        self._file_path = config if isinstance(config, str) else None
+        self._yaml_loader = YAML()
+        self._yaml_loader.preserve_quotes = True  # Retain quotes from the original file
+
         # Load configuration from file or dictionary
         if isinstance(config, str):
             if config.endswith('.json'):
@@ -18,7 +71,7 @@ class Paramify:
                     config = json.load(f)
             elif config.endswith(('.yaml', '.yml')):
                 with open(config, 'r') as f:
-                    config = yaml.safe_load(f)
+                    config = self._yaml_loader.load(f)
             else:
                 raise ValueError("Unsupported file format. Use a JSON or YAML file.")
         elif not isinstance(config, dict):
@@ -86,6 +139,10 @@ class Paramify:
             if hasattr(self, callback_name) and callable(getattr(self, callback_name)):
                 getattr(self, callback_name)(value)
 
+            # Save changes if a file path is provided
+            if self._file_path:
+                self._save_config()
+
         # Attach the setter method to the class
         setattr(self, f"set_{name}", setter.__get__(self))
 
@@ -132,9 +189,40 @@ class Paramify:
         # Parse arguments and update parameters
         args = self.parser.parse_args()
         cli_args = vars(args)
+
         for name, value in cli_args.items():
             if name in self.parameters.dict():
-                setattr(self.parameters, name, value)
+                # Directly update the parameter model to avoid triggering persistence
+                self.parameters.__dict__[name] = value
+
+    def _save_config(self):
+        """
+        Save the current configuration back to the file with preserved formatting using ruamel.yaml.
+        """
+        if not self._file_path:
+            return  # No file to save to
+
+        if self._file_path.endswith(('.yaml', '.yml')):
+            # Load the original YAML content to retain formatting
+            with open(self._file_path, 'r') as f:
+                original_data = self._yaml_loader.load(f)
+
+            # Synchronize self.parameters with the original data
+            for param in self._config_params:
+                name = param['name']
+                if name in self.parameters.dict():
+                    for p in original_data.get('parameters', []):
+                        if p['name'] == name:
+                            p['default'] = self.parameters.dict()[name]
+
+            # Save the updated configuration back to the file
+            with open(self._file_path, 'w') as f:
+                self._yaml_loader.dump(original_data, f)
+
+        elif self._file_path.endswith('.json'):
+            # For JSON, simply overwrite the file
+            with open(self._file_path, 'w') as f:
+                json.dump(self._config, f, indent=4)
 
     def get_parameters(self) -> Dict[str, Any]:
         """

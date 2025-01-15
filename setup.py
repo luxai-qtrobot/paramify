@@ -8,7 +8,7 @@ with open(os.path.join(current_dir, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="paramify",
-    version="0.1.2",
+    version="0.1.3",
     description="A lightweight Python library for dynamic parameter management and runtime configuration.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -20,7 +20,7 @@ setup(
     install_requires=[
         "Flask>=2.0.0",
         "pydantic>=1.10.0",
-        "pyyaml>=5.4.1",
+        "ruamel.yaml>=0.17.0",
     ],
     classifiers=[
         "Development Status :: 4 - Beta",
