@@ -166,7 +166,7 @@ class Paramify:
                     arg_name,
                     help=param.get("description", ""),
                     default=param.get("default", False),
-                    action="store_true" if not param.get("default", False) else "store_false"
+                    action="store_true" # if not param.get("default", False) else "store_false"
                 )
             elif param_type == "list":
                 # Handle list arguments with nargs="+"
