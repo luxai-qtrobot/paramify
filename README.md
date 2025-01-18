@@ -1,6 +1,8 @@
 
 # Paramify
 
+![Test Status](https://github.com/luxai-qtrobot/paramify/actions/workflows/python-tests.yml/badge.svg)
+
 **Paramify** is a lightweight Python library designed to simplify dynamic parameter management. It allows developers to define, validate, and manage parameters dynamically using a JSON or YAML schema, with optional support for **command-line integration** and a **web-based parameter configuration**.
 
 ---
