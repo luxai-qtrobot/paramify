@@ -220,7 +220,13 @@ class Paramify:
                 self._yaml_loader.dump(original_data, f)
 
         elif self._file_path.endswith('.json'):
-            # For JSON, simply overwrite the file
+            # Synchronize self.parameters with the configuration
+            for param in self._config['parameters']:
+                name = param['name']
+                if name in self.parameters.dict():
+                    param['default'] = self.parameters.dict()[name]
+
+            # Overwrite the JSON file with updated configuration
             with open(self._file_path, 'w') as f:
                 json.dump(self._config, f, indent=4)
 
