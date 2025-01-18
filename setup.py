@@ -8,7 +8,7 @@ with open(os.path.join(current_dir, "README.md"), encoding="utf-8") as f:
 
 setup(
     name="paramify",
-    version="0.1.3",
+    version="0.1.4",
     description="A lightweight Python library for dynamic parameter management and runtime configuration.",
     long_description=long_description,
     long_description_content_type="text/markdown",
